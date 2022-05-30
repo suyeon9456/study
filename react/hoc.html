@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const Notice = ({ data }) => {
+        // React.useEffect(() => {
+        //   console.log(list);
+        // }, [list])
+        return (
+          <li key={data.id}>{data.title}</li>
+        )
+      }
+      const Qna = ({ data }) => {
+        // React.useEffect(() => {
+        //   console.log(list);
+        // }, [list])
+        return (
+          <li key={data.id}>{data.title}</li>
+        )
+      }
+      const withSubscription = (WrappedComponent) => {
+        console.log(WrappedComponent.prototype);
+        return (props) => {
+          // WrappedComponent.useEffect = () => {
+          //   console.log(props.data)
+          // }
+          React.useEffect(() => {
+            console.log(props.data);
+          }, [props.data])
+          return (
+            <>
+              {props?.data.map((data) => (
+                <WrappedComponent key={data.id} data={data} />
+              ))}
+            </>
+          )
+        }
+      }
+      const App = () => {
+        const notice = [
+          { id: 1, title: 'notice1', content: 'notice1...' },
+          { id: 2, title: 'notice2', content: 'notice2...' },
+          { id: 3, title: 'notice3', content: 'notice3...' },
+        ]
+        const qna = [
+          { id: 1, title: 'qna1', content: 'qna1...' },
+          { id: 2, title: 'qna2', content: 'qna2...' },
+          { id: 3, title: 'qna3', content: 'qna3...' },
+        ]
+        const EnhancedNotice = withSubscription(Notice);
+        const EnhancedQna = withSubscription(Qna);
+        return (
+          <div>
+            <ul>
+              <EnhancedNotice data={notice} />
+            </ul>
+            <ul>
+              <EnhancedQna data={qna} />
+            </ul>
+          </div>
+        )
+      }
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>
