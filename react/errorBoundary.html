@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class ParentErrorBoundary extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = { hasError: false };
+        }
+
+        static getDerivedStateFromError(error) {
+          console.log('ParentErrorBoundary: getDerivedStateFromError 호출');
+          // console.log('error: ', error);
+          // 다음 렌더링에서 폴백 UI가 보이도록 상태를 업데이트 합니다.
+          return { hasError: true };
+        }
+
+        render() {
+          if (this.state.hasError) {
+            // 폴백 UI를 커스텀하여 렌더링할 수 있습니다.
+            return <h1>ParentErrorBoundary로 전파됨</h1>;
+          }
+
+          return this.props.children;
+        }
+      }
+      class ErrorBoundary extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = { hasError: false };
+        }
+
+        static getDerivedStateFromError(error) {
+          console.log('ErrorBoundary: getDerivedStateFromError 호출');
+          // console.log('error: ', error);
+          // 다음 렌더링에서 폴백 UI가 보이도록 상태를 업데이트 합니다.
+          return { hasError: true };
+        }
+
+        // componentDidCatch(error, errorInfo) {
+        //   console.log('componentDidCatch 호출');
+        //   // 에러 리포팅 서비스에 에러를 기록할 수도 있습니다.
+        //   console.log('error: ', error);
+        //   console.log('errorInfo: ', errorInfo);
+        // }
+
+        render() {
+          if (this.state.hasError) {
+            // 폴백 UI를 커스텀하여 렌더링할 수 있습니다.
+            return <h1>Something went wrong.</h1>;
+          }
+
+          return this.props.children;
+        }
+      }
+      const Widget = () => {
+        throw new Error('I crashed!');
+        React.useEffect(() => {
+          console.log('마운트');
+          return () => {
+            console.log('언마운트');
+          }
+        }, []);
+        return (
+          <>
+            <div>Error 발생안함1</div>
+            <button onClick={() => { throw new Error('I crashed!'); }}>에러 발생</button>
+          </>
+        )
+      }
+
+      const Widget2 = () => {
+        return <div>Error 발생안함2</div>
+      }
+    
+      const App = () => {
+        return (
+          <ParentErrorBoundary>
+            <ErrorBoundary>
+              <Widget />
+              <Widget2 />
+            </ErrorBoundary>
+          </ParentErrorBoundary>
+        );
+      }
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>
