@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="portal"></div>
+    <script type="text/babel">
+      const PortalWrap = () => {
+        
+        return (
+          <div style={{ width: '200px', height: '200px', backgroundColor: 'red', overflow: 'hidden', zIndex: 1 }}>
+            나는 상위 노드임
+            <Portal />
+          </div>
+          // <div style={{ width: '200px', height: '200px', backgroundColor: 'red', overflow: 'hidden' }}>
+          //   하위 컴포넌트를 root DOM 엘리먼트가 아닌 portal DOM 엘리먼트로 보낼거다.
+          //   <Portal />
+          // </div>
+        );
+      }
+      const Portal = () => {
+        // return ReactDOM.createPortal(
+        //   '나는 root DOM 엘리먼트가 아닌 portal DOM 엘리먼트에서 표시될 거다.',
+        //   document.getElementById('portal')
+        // );
+        return ReactDOM.createPortal(
+          (
+            <div style={{ width: '500px', height: '500px', backgroundColor: 'blue', color: 'white' }}>
+              나는 자식노드임 내가 사이즈가 더 큼!
+            </div>
+          ),
+          document.getElementById('portal')
+        )
+        // return (
+        //   // <div style={{ width: '500px', height: '500px', backgroundColor: 'blue', color: 'white' }}>
+        //   //   나는 자식노드임 내가 사이즈가 더 큼!
+        //   // </div>
+        // );
+      }
+      const App = () => {
+        return (
+          <div>
+            <PortalWrap />
+          </div>
+        )
+      }
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>

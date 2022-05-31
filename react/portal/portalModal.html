@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="portal-root"></div>
+    <script type="text/babel">
+      const PortalModal = () => {
+        React.useEffect(() => {
+          console.log('PortalModal 마운트')
+        }, []);
+        return ReactDOM.createPortal(
+          (
+            <div onClick={() => console.log('상위노드 클릭 핸들러')}>
+              나는 상위 노드임
+              <PortalModalChild />
+            </div>
+          ),
+          document.getElementById('portal-root')
+        );
+      }
+      const PortalModalChild = () => {
+        React.useEffect(() => {
+          console.log('PortalModalChild 마운트')
+        }, []);
+        return (
+          <button onClick={() => console.log('하위노드 클릭 핸들러')}>child click</button>
+        );
+      }
+      const App = () => {
+        return (
+          <div style={{  width: '300px', height: '300px', border: '1px solid black'}}>
+            여기는 App -
+            <PortalModal />
+          </div>
+        )
+      }
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>
