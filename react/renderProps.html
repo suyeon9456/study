@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const ClickTracker = () => {
+        return (
+          <div>
+            <h1>아래 버튼을 클릭해보세요!</h1>
+            <ClickButton />
+          </div>
+        );
+      };
+      const ClickButton = ({ render }) => {
+        const [state, setState] = React.useState(0);
+        const onClick = (event) => {
+          setState((prev) => prev + 1);
+        }
+        return (
+          <>
+            <button onClick={onClick}>클릭!</button>
+            {render(state)}
+          </>
+        )
+      }
+      const Heart = ({ state }) => {
+        return (
+          <p> Heart 클릭 수: {state}</p>
+        )
+      }
+      const App = () => {
+        return (
+          <ClickButton render={(state) => <Heart state={state} />} />
+        )
+      }
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>
