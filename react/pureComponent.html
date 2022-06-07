@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      class Example extends React.PureComponent {
+        constructor(props) {
+          console.log('constructor 호출됨');
+          super(props);
+          this.state = { count: '0' };
+          this.handleClick = this.handleClick.bind(this);
+        }
+
+        handleClick() {
+          this.setState((state) => state);
+        }
+        componentDidUpdate() {
+          console.log('리렌더링됨')
+        }
+
+        render() {
+          console.log('render 호출됨');
+          return (
+            <div>
+              <span>{this.state.count}</span>
+              <button onClick={this.handleClick}>click</button>
+            </div>
+          );
+        }
+      }
+      Example.defaultProps = { color: 'blue' }
+      const element = <Example color={null} />;
+      console.log(element);
+      
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      console.log(root.render(element));
+      // root.render(element);
+    </script>
+  </body>
+</html>
