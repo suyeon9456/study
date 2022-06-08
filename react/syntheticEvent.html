@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const Example = () => {
+        const onClick = React.useCallback((e) => {
+          console.log(e);
+          // return e;
+        }, []);
+        const onOtherClick = React.useCallback((e) => {
+          console.log(e.nativeEvent.currentTarget);
+        }, []);
+        return (
+          <>
+            <button id="test" onClick={onClick} onFocus={onClick}>event 발생1</button>
+            <button onClick={onOtherClick}>event 발생2</button>
+          </>
+        )
+        // return (
+        //   <div
+        //     tabIndex={1}
+        //     onFocus={(e) => {
+        //       console.log('onFocus.currentTarget', e.currentTarget);
+        //       console.log('onFocus.target', e.target);
+        //       console.log('onFocus.relatedTarget', e.relatedTarget);
+        //       if (e.currentTarget === e.target) {
+        //         console.log('focused self');
+        //       } else {
+        //         console.log('focused child', e.target);
+        //       }
+        //       if (!e.currentTarget.contains(e.relatedTarget)) {
+        //         // Not triggered when swapping focus between children
+        //         console.log('focus entered self');
+        //       }
+        //     }}
+        //     onBlur={(e) => {
+        //       console.log('onBlur.currentTarget', e.currentTarget);
+        //       console.log('onBlur.target', e.target);
+        //       console.log('onBlur.relatedTarget', e.relatedTarget);
+        //       if (e.currentTarget === e.target) {
+        //         console.log('unfocused self');
+        //       } else {
+        //         console.log('unfocused child', e.target);
+        //       }
+        //       if (!e.currentTarget.contains(e.relatedTarget)) {
+        //         // Not triggered when swapping focus between children
+        //         console.log('focus left self');
+        //       }
+        //     }}
+        //   >
+        //     <input id="1" />
+        //     <input id="2" />
+        //   </div>
+        // );
+      }
+      const App = () => {
+        return (
+          <Example />
+        )
+      }
+
+      const container = document.getElementById('root');
+      const root = ReactDOM.createRoot(container);
+      // console.log(root);
+      root.render(<App />);
+    </script>
+  </body>
+</html>
